@@ -1,7 +1,7 @@
 import React from 'react';
 import './from.css'
 
-const ImageLinkForm = ({ onInputChange, onSubmit }) => {
+const ImageLinkForm = ({ onInputChange, onFileChange, onSubmit, onReset }) => {
     return (
         <div >
             <p className="white f3">
@@ -15,8 +15,11 @@ const ImageLinkForm = ({ onInputChange, onSubmit }) => {
                     </div>
                     <div className='center' style={{ marginTop: '10px' }}>
                         <p>OR</p>
-                        <input className="f4 pa2 w-70 center" type="file" id="fileInput" name="fileInput"></input>
-                        <button className='w-30 grow f4 link ph3 pv2 div white bg-navy' onClick={onSubmit}>Detect</button>
+                        <input className="f4 pa2 w-70 center" type="file" id="fileInput" name="fileInput" accept="image/*" onChange={onFileChange}></input>
+                        <div style={{ display: 'flex', gap: '10px', marginTop: '10px', justifyContent: 'center' }}>
+                            <button className='grow f4 link ph3 pv2 div white bg-navy' style={{ width: '120px' }} onClick={onSubmit}>Detect</button>
+                            <button className='grow f4 link ph3 pv2 div white bg-red' style={{ width: '120px' }} onClick={onReset}>Reset</button>
+                        </div>
                     </div>
                 </div>
 

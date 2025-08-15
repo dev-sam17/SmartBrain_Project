@@ -5,7 +5,8 @@ require('dotenv').config();
 
 const app = express();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 const database = {
   users: [
@@ -71,6 +72,26 @@ app.post("/signup", (req, res) => {
 app.post("/imageurl", (req, res) => {
   const { input } = req.body;
   
+  console.log('Received input type:', input.startsWith('data:') ? 'base64' : 'url');
+  console.log('Input length:', input.length);
+  
+  // Determine if input is a URL or base64 data
+  let imageData;
+  if (input.startsWith('data:')) {
+    // Base64 image data from file upload
+    const base64Data = input.split(',')[1];
+    console.log('Base64 data length:', base64Data.length);
+    imageData = {
+      "base64": base64Data
+    };
+  } else {
+    // URL
+    console.log('Processing URL:', input.substring(0, 50) + '...');
+    imageData = {
+      "url": input
+    };
+  }
+  
   const raw = JSON.stringify({
     "user_app_id": {
         "user_id": process.env.CLARIFAI_USER_ID,
@@ -79,9 +100,7 @@ app.post("/imageurl", (req, res) => {
     "inputs": [
         {
             "data": {
-                "image": {
-                    "url": input
-                }
+                "image": imageData
             }
         }
     ]
@@ -98,8 +117,17 @@ app.post("/imageurl", (req, res) => {
 
   fetch(`https://api.clarifai.com/v2/models/${process.env.CLARIFAI_MODEL_ID}/outputs`, requestOptions)
     .then(response => response.json())
-    .then(result => res.json(result))
-    .catch(error => res.status(400).json('Unable to work with API'));
+    .then(result => {
+      console.log('Clarifai response status:', result.status);
+      if (result.outputs && result.outputs[0] && result.outputs[0].data) {
+        console.log('Regions found:', result.outputs[0].data.regions ? result.outputs[0].data.regions.length : 0);
+      }
+      res.json(result);
+    })
+    .catch(error => {
+      console.error('Clarifai API error:', error);
+      res.status(400).json('Unable to work with API');
+    });
 });
 
 app.put("/image", (req, res) => {

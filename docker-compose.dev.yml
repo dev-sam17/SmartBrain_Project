@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  smartbrain-frontend:
+    build:
+      context: ./facerecognitionbrain
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./facerecognitionbrain:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
+    tty: true
+    networks:
+      - smartbrain-network
+
+  smartbrain-backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CLARIFAI_USER_ID=${CLARIFAI_USER_ID}
+      - CLARIFAI_APP_ID=${CLARIFAI_APP_ID}
+      - CLARIFAI_PAT=${CLARIFAI_PAT}
+      - CLARIFAI_MODEL_ID=${CLARIFAI_MODEL_ID}
+    env_file:
+      - ./server/.env
+    depends_on:
+      - smartbrain-frontend
+    networks:
+      - smartbrain-network
+
+networks:
+  smartbrain-network:
+    driver: bridge

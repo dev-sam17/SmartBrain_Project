@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  smartbrain-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - CLARIFAI_USER_ID=${CLARIFAI_USER_ID}
+      - CLARIFAI_APP_ID=${CLARIFAI_APP_ID}
+      - CLARIFAI_PAT=${CLARIFAI_PAT}
+      - CLARIFAI_MODEL_ID=${CLARIFAI_MODEL_ID}
+    env_file:
+      - ./server/.env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/api', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - smartbrain-network
+
+networks:
+  smartbrain-network:
+    driver: bridge

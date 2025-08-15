@@ -10,7 +10,7 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 // Serve static files from React build
-app.use(express.static(path.join(__dirname, '../facerecognitionbrain/build')));
+app.use(express.static(path.join(__dirname, 'build')));
 
 const database = {
   users: [
@@ -152,7 +152,7 @@ app.put("/api/image", (req, res) => {
 
 // Serve React app for all non-API routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../facerecognitionbrain/build/index.html'));
+  res.sendFile(path.join(__dirname, 'build/index.html'));
 });
 
 app.listen(3001, () => {

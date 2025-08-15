@@ -3,7 +3,7 @@ import { useState } from 'react';
 import ImageLinkForm from '../../components/ImageLinkForm/ImageLinkForm';
 import Logo from '../../components/Logo/Logo';
 import Rank from '../../components/Rank/Rank';
-import ParticleEffect from '../../components/Particles/Particles';
+import Particles from '../../components/Particles/Particles';
 import FaceRecognition from '../../components/FaceRecognition/FaceRecognition';
 
 import './home.style.css';
@@ -175,7 +175,16 @@ const Home = () =>  {
 
   return (
     <div className="App">
-      <ParticleEffect />
+      <Particles
+        particleColors={['#ffffff', '#ffffff']}
+        particleCount={1000}
+        particleSpread={10}
+        speed={0.1}
+        particleBaseSize={300}
+        moveParticlesOnHover={true}
+        alphaParticles={true}
+        disableRotation={false}
+      />
       <Logo />
       <Rank />
       <ImageLinkForm onInputChange={onInputChange} onFileChange={onFileChange} onSubmit={onSubmit} onReset={onReset} />

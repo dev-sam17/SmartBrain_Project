@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Particles from "../../components/Particles/Particles";
 
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase.utils";
 
@@ -53,8 +54,23 @@ const Signup = () => {
   };
 
   return (
-    <article className="br23 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center self-">
-      <main className="pa4 black-80">
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Particles
+        particleColors={['#ffffff', '#ffffff']}
+        particleCount={1000}
+        particleSpread={10}
+        speed={0.1}
+        particleBaseSize={300}
+        moveParticlesOnHover={true}
+        alphaParticles={true}
+        disableRotation={false}
+      />
+      <div style={{ position: 'fixed', top: '20px', left: '20px', display: 'flex', gap: '10px', zIndex: 10 }}>
+        <Link to="/" className="white f4 link dim underline pa2 pointer">Home</Link>
+        <Link to="/signin" className="white f4 link dim underline pa2 pointer">Sign In</Link>
+      </div>
+      <article className="br23 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center self-">
+        <main className="pa4 black-80">
         <form className="measure center">
           <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
             <legend className="white f3 fw6 ph0 mh0">Sign up</legend>
@@ -128,8 +144,9 @@ const Signup = () => {
             </div>
           </fieldset>
         </form>
-      </main>
-    </article>
+        </main>
+      </article>
+    </div>
   );
 };
 

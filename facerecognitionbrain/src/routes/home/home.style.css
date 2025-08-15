@@ -1,17 +1,6 @@
 body {
     background-color: #4d4855;
-  background: linear-gradient(90deg, #4d4855 0%, #000000 100%);
-  }
-  
-  #tsparticles {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    left: 0;
-    top: 0;
-    z-index: -1;
+  background: linear-gradient(90deg, #0d0d0d 0%, #000000 100%);
   }
   
   

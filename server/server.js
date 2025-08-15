@@ -1,12 +1,16 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require("path");
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
+// Serve static files from React build
+app.use(express.static(path.join(__dirname, '../facerecognitionbrain/build')));
 
 const database = {
   users: [
@@ -19,11 +23,12 @@ const database = {
   ],
 };
 
-app.get("/", (req, res) => {
+// API Routes
+app.get("/api", (req, res) => {
   res.json(database.users);
 });
 
-app.get("/profile/:id", (req, res) => {
+app.get("/api/profile/:id", (req, res) => {
   const id = +req.params.id;
   let found = false;
   database.users.forEach((user) => {
@@ -37,7 +42,7 @@ app.get("/profile/:id", (req, res) => {
   }
 });
 
-app.post("/signin", (req, res) => {
+app.post("/api/signin", (req, res) => {
   let foundUser = false;
 
   for (let i = 0; i < database.users.length; i++) {
@@ -57,7 +62,7 @@ app.post("/signin", (req, res) => {
   }
 });
 
-app.post("/signup", (req, res) => {
+app.post("/api/signup", (req, res) => {
   const { email, password, name } = req.body;
   database.users.push({
     id: database.users.length + 1,
@@ -69,7 +74,7 @@ app.post("/signup", (req, res) => {
   res.json("signup successful");
 });
 
-app.post("/imageurl", (req, res) => {
+app.post("/api/imageurl", (req, res) => {
   const { input } = req.body;
   
   console.log('Received input type:', input.startsWith('data:') ? 'base64' : 'url');
@@ -130,7 +135,7 @@ app.post("/imageurl", (req, res) => {
     });
 });
 
-app.put("/image", (req, res) => {
+app.put("/api/image", (req, res) => {
   const id = +req.body.id;
   let found = false;
   database.users.forEach((user) => {
@@ -145,6 +150,12 @@ app.put("/image", (req, res) => {
   }
 });
 
+// Serve React app for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../facerecognitionbrain/build/index.html'));
+});
+
 app.listen(3001, () => {
   console.log("Server running at http://localhost:3001");
+  console.log("Serving React app from build folder");
 });

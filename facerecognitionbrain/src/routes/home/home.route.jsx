@@ -144,7 +144,7 @@ const Home = () =>  {
       setImageUrl(input);
     }
 
-    fetch('http://localhost:3001/imageurl', {
+    fetch('http://localhost:3001/api/imageurl', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

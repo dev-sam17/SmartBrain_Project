@@ -1,0 +1,29 @@
+{
+  "name": "smartbrain_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install-all": "npm install && cd facerecognitionbrain && npm install && cd ../server && npm install",
+    "build": "cd facerecognitionbrain && npm run build",
+    "start": "cd server && npm start",
+    "dev": "concurrently \"cd server && npm run dev\" \"cd facerecognitionbrain && npm start\"",
+    "build-and-start": "npm run build && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-sam17/SmartBrain_Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "bugs": {
+    "url": "https://github.com/dev-sam17/SmartBrain_Project/issues"
+  },
+  "homepage": "https://github.com/dev-sam17/SmartBrain_Project#readme"
+}
